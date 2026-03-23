@@ -85,14 +85,24 @@
     .logo {
       display: flex;
       align-items: center;
+      gap: 9px;
       text-decoration: none;
     }
 
-    .logo-img {
-      height: 32px;
-      width: auto;
-      object-fit: contain;
-      /* Logo 3.1.png is white — renders correctly on dark backgrounds */
+    .logo-word {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.01em;
+      line-height: 1;
+    }
+
+    .logo-word-ai {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
     }
 
     .header-right {
@@ -155,14 +165,6 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 0 18px rgba(46, 97, 254, 0.3);
-      overflow: hidden;
-      padding: 9px;
-    }
-
-    .agent-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
     }
 
     .agent-online-dot {
@@ -259,14 +261,6 @@
       background: var(--gradient);
       color: #fff;
       box-shadow: 0 0 12px rgba(46, 97, 254, 0.25);
-      padding: 7px;
-      overflow: hidden;
-    }
-
-    .msg-row.assistant .msg-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
     }
 
     .msg-row.user .msg-avatar {
@@ -315,14 +309,6 @@
       justify-content: center;
       flex-shrink: 0;
       margin-top: 4px;
-      padding: 7px;
-      overflow: hidden;
-    }
-
-    .typing-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
     }
 
     .typing-bubble {
@@ -692,13 +678,26 @@
 </head>
 
 <body>
+  <!-- Global SVG defs — gradient shared by all inline SVGs on the page -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2E61FE"/>
+        <stop offset="100%" stop-color="#00F0FF"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
   <div class="shell">
 
     <!-- ── Header ──────────────────────────────────────────────────── -->
     <header class="header">
       <div class="logo">
-        <!-- White wordmark — designed for dark backgrounds (Logo 3.1.png) -->
-        <img src="/Assets/Logos/Logo 3.1.png" alt="Trivox AI" class="logo-img" />
+        <svg width="22" height="18" viewBox="0 0 22 18" fill="none" aria-hidden="true">
+          <path d="M0 0H6.5L11 17.5H4.5L0 0Z" fill="url(#tg)"/>
+          <path d="M8.5 0H22L17.5 17.5H11L8.5 0Z" fill="url(#tg)" opacity="0.75"/>
+        </svg>
+        <span class="logo-word">Trivox<span class="logo-word-ai"> AI</span></span>
       </div>
       <div class="header-right">
         <div class="status-pill">
@@ -712,8 +711,10 @@
     <div class="agent-bar">
       <div class="agent-avatar-wrap">
         <div class="agent-avatar">
-          <!-- Trivox V icon mark — transparent PNG renders on gradient bg -->
-          <img src="/Assets/Icons/Icon 1.png" alt="Trivox AI" />
+          <svg width="20" height="16" viewBox="0 0 22 18" fill="none" aria-hidden="true">
+            <path d="M0 0H6.5L11 17.5H4.5L0 0Z" fill="white"/>
+            <path d="M8.5 0H22L17.5 17.5H11L8.5 0Z" fill="white" opacity="0.75"/>
+          </svg>
         </div>
         <div class="agent-online-dot"></div>
       </div>
@@ -843,11 +844,7 @@
       const av = document.createElement('div');
       av.className = 'msg-avatar';
       if (role === 'assistant') {
-        const icon = document.createElement('img');
-        icon.src = '/Assets/Icons/Icon 1.png';
-        icon.alt = 'Trivox AI';
-        icon.style.cssText = 'width:18px;height:18px;object-fit:contain;';
-        av.appendChild(icon);
+        av.innerHTML = '<svg width="16" height="13" viewBox="0 0 22 18" fill="none" aria-hidden="true"><path d="M0 0H6.5L11 17.5H4.5L0 0Z" fill="white"/><path d="M8.5 0H22L17.5 17.5H11L8.5 0Z" fill="white" opacity="0.75"/></svg>';
       } else {
         av.textContent = 'U';
       }
@@ -879,7 +876,7 @@
 
       const av = document.createElement('div');
       av.className = 'typing-avatar';
-      av.innerHTML = '<img src="/Assets/Icons/Icon 1.png" alt="Trivox AI" style="width:18px;height:18px;object-fit:contain;" />';
+      av.innerHTML = '<svg width="16" height="13" viewBox="0 0 22 18" fill="none" aria-hidden="true"><path d="M0 0H6.5L11 17.5H4.5L0 0Z" fill="white"/><path d="M8.5 0H22L17.5 17.5H11L8.5 0Z" fill="white" opacity="0.75"/></svg>';
 
       const bubble = document.createElement('div');
       bubble.className = 'typing-bubble';
@@ -919,7 +916,10 @@
 
       card.innerHTML = `
         <div class="lead-card-header">
-          <img src="/Assets/Logos/Logo 2.1.jpg" alt="Trivox AI" style="height:26px;width:auto;object-fit:contain;border-radius:4px;" />
+          <div style="display:flex;align-items:center;gap:7px;">
+            <svg width="16" height="13" viewBox="0 0 22 18" fill="none" aria-hidden="true"><path d="M0 0H6.5L11 17.5H4.5L0 0Z" fill="url(#tg)"/><path d="M8.5 0H22L17.5 17.5H11L8.5 0Z" fill="url(#tg)" opacity="0.75"/></svg>
+            <span style="font-size:14px;font-weight:700;color:#0D0E14;letter-spacing:0.01em;">Trivox<span style="background:linear-gradient(135deg,#2E61FE,#00F0FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;"> AI</span></span>
+          </div>
         </div>
         <p>Your details have been captured by Trivox AI. A specialist will reach out with personalized options. Ready to talk now?</p>
         ${tagsHTML ? `<div class="lead-tags">${tagsHTML}</div>` : ''}
