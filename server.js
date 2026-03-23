@@ -173,7 +173,7 @@ app.post('/api/chat', async (req, res) => {
     // Agentic loop — handles tool calls internally
     while (iteration < MAX_ITERATIONS) {
       const stream = client.messages.stream({
-        model: 'claude-opus-4-6',
+        model: 'claude-sonnet-4-6',
         max_tokens: 1024,
         system: SYSTEM_PROMPT,
         tools: TOOLS,
