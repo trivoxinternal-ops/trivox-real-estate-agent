@@ -5,7 +5,6 @@ const path = require('path');
 const app = express();
 app.use(express.json({ limit: '2mb' }));
 app.use(express.static(path.join(__dirname)));
-app.use('/Assets', express.static(path.join(__dirname, '..', 'Assets')));
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
